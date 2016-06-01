@@ -16,7 +16,7 @@ import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.ECGenParameterSpec;
+import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.UUID;
@@ -67,16 +67,14 @@ public class QlassifiedKeyStore implements QlassifiedSecurity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             keyPairGenerator = KeyPairGenerator.getInstance(
-                    KeyProperties.KEY_ALGORITHM_EC, ANDROID_KEYSTORE_INSTANCE);
+                    KeyProperties.KEY_ALGORITHM_RSA, ANDROID_KEYSTORE_INSTANCE);
 
             keyPairGenerator.initialize(
                     new KeyGenParameterSpec.Builder(
                             alias,
-                            KeyProperties.PURPOSE_SIGN)
-                            .setAlgorithmParameterSpec(new ECGenParameterSpec("secp256r1"))
-                            .setDigests(KeyProperties.DIGEST_SHA256,
-                                    KeyProperties.DIGEST_SHA384,
-                                    KeyProperties.DIGEST_SHA512)
+                            KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
+                            .setAlgorithmParameterSpec(new RSAKeyGenParameterSpec(512, RSAKeyGenParameterSpec.F4))
                             .build());
         /**
          * On versions below Marshmellow but above Jelly Bean, use the next best thing
