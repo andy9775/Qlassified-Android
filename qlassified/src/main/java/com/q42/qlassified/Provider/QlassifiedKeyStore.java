@@ -8,35 +8,18 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import com.q42.qlassified.Entry.*;
 
-import com.q42.qlassified.Entry.QlassifiedBoolean;
-import com.q42.qlassified.Entry.QlassifiedEntry;
-import com.q42.qlassified.Entry.QlassifiedFloat;
-import com.q42.qlassified.Entry.QlassifiedInteger;
-import com.q42.qlassified.Entry.QlassifiedLong;
-import com.q42.qlassified.Entry.QlassifiedString;
-import com.q42.qlassified.Entry.EncryptedEntry;
-
+import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.UnrecoverableEntryException;
+import java.security.*;
 import java.security.cert.CertificateException;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.UUID;
-
-import javax.security.auth.x500.X500Principal;
 
 @TargetApi(18)
 public class QlassifiedKeyStore implements QlassifiedSecurity {
@@ -225,7 +208,7 @@ public class QlassifiedKeyStore implements QlassifiedSecurity {
         String alias = getUniqueDeviceId(this.context);
         try {
             KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry)keyStoreInstance.getEntry(alias, null);
-            RSAPrivateKey privateKey = (RSAPrivateKey) privateKeyEntry.getPrivateKey();
+            PrivateKey privateKey =  privateKeyEntry.getPrivateKey();
             return crypto.decrypt(input, privateKey);
         } catch (NoSuchAlgorithmException |
                 UnrecoverableEntryException |
