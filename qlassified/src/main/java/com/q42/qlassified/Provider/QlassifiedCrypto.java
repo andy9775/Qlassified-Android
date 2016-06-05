@@ -18,7 +18,7 @@ public class QlassifiedCrypto {
 
     public static final String CHARSET = "UTF8";
     public static final String ALGORITHM = "RSA/NONE/PKCS1Padding";
-    public static final int BASE64_MODE = Base64.DEFAULT;
+    public static final int BASE64_MODE = Base64.URL_SAFE;
 
     public String encrypt(String input, RSAPublicKey publicKey) {
 
